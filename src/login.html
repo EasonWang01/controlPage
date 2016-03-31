@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Techmation</title>
+    
+          <link rel="stylesheet" href="../style/loginstyle.css">
+		 
+		<script type="text/javascript" src="../script/jquery-1.11.3.min.js"></script>
+
+		<script type="text/javascript" src="../script/jquery-ui.min.js"></script>
+  
+		<script src="../script/main.js" type="text/javascript"></script>
+
+		<script type="text/javascript" src="../script/common.js"></script>
+
+		<script type="text/javascript" src="../script/opcxml.js"></script>
+     
+		
+		
+		<script>   
+		
+		$(document).ready(function(){
+			
+
+			//ReadValueString("unit/dHdGlobal.gboAccount");
+		///因讀到之readvalue的input value均為空白，故採用test變數方法
+			//ReadValueString("unit/dHdGlobal.gboPassword");
+		
+			ReadValueString1(var1);
+
+		});
+
+
+
+
+
+
+
+
+var1=["unit/dHdGlobal.gboAccount","unit/dHdGlobal.gboPassword"];
+	 	
+
+
+			function ReadValueString1(SimotionVariable) {/////////函式一開始會先執行最下方sendReadRequest一次送完
+				var tmpReadCB = function(parResponse)///////此為閉包
+				{///伺服器回應parResponse
+					//console.log(parResponse[0]);
+					//console.log(parResponse[1]);
+					account=parResponse[0].mItemValue;
+					password=parResponse[1].mItemValue;
+					return true;
+				}
+				////sendReadRequest後server傳回OPCReadRequest 第二個參數
+				var tmpReadRequest = new OPCReadRequest("DE", tmpReadCB);
+
+				for(var i = 0; i < SimotionVariable.length; i++)
+				{
+				tmpReadRequest.addItem("SIMOTION", SimotionVariable[i]);
+				
+				}
+				tmpReadRequest.sendReadRequest();
+			}
+
+
+		</script>
+    
+  </head>
+
+  <body>
+
+    
+<!-- Form Mixin-->
+<!-- Input Mixin-->
+<!-- Button Mixin-->
+<!-- Pen Title-->
+<div class="pen-title">
+  <h1>弘訊科技</h1><span>Techmation Co.,LTD.</span>
+</div>
+<!-- Form Module-->
+<div class="module form-module">
+  <div class="toggle"><i class="fa fa-times fa-pencil"></i>
+   
+  </div>
+  <div class="form">
+    <h2 style="text-align:center;" >登入Login</h2>
+    
+		<input type="hidden"   id="hide">
+      <input type="text" id="acco"  placeholder="請輸入帳號"/>
+      <input type="password"  id="pass"   placeholder="請輸入密碼"/>
+      <button title="帳號或密碼不正確" onclick="check()">Login</button>
+      <div id="tooltip" style="display:none;text-align:center;font-size:20px;">帳號或密碼不正確</div>
+	 
+  </div>
+  <div class="form">
+    <h2>瀏覽器相關資訊</h2>
+   <script>
+		   function check(){
+
+				  
+		   	if($("#acco").val()==account&&$("#pass").val()==password){
+		   		document.cookie ='cookie1=true; expires=Thu, 2 Aug 2081 20:47:11 UTC;'
+			
+		   		window.location.replace('Manual.htm');
+		   	}else{
+		   		$('#tooltip').toggle();
+				  function se(){$('#tooltip').toggle()};
+
+				  setTimeout(se, 1200);
+		   	}
+
+		   };
+   
+		   
+		function PrintVersion() {
+		    var msg = "<br\><br\><br\>";
+		    
+		    msg += "瀏覽器版本 : " + navigator.appVersion + "<br\><br\>";
+		    
+		    msg += "cookie功能是否開啟 : " + navigator.cookieEnabled + "<br\><br\>";
+		    msg += "HTTP協定使用者代理 : " + navigator.userAgent + "<br\>";
+		    document.write(msg);
+		}
+		PrintVersion()
+</script>
+  </div>
+  
+</div>
+   
+<script>
+						// Toggle Function
+				$('.toggle').click(function(){
+				  // Switches the Icon
+				  $(this).children('i').toggleClass('fa-pencil');
+				  // Switches the forms  
+				  $('.form').animate({
+					height: "toggle",
+					'padding-top': 'toggle',
+					'padding-bottom': 'toggle',
+					opacity: "toggle"
+				  }, "slow");
+				});
+
+				
+			</script>
+    
+    
+    
+  </body>
+</html>
